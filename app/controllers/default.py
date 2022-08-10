@@ -64,3 +64,24 @@ def consulta():
 
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
+@app.route('/insercao')
+def insercao():
+	return render_template('insercao.html')
+
+@app.route('/salvar_insercao', methods=['POST'])
+def salvar_insercao():
+	Nome = request.form.get('nome')
+	Idade = int(request.form.get('idade'))
+	Sexo = request.form.get('sexo')
+	Salario = float(request.form.get('salario'))
+
+    #Instancia pessoa
+	pessoa = Pessoa(Nome, Idade, Sexo, Salario)
+
+    #Adiciona registro de Pessoa no banco de dados
+	db.session.add(pessoa)
+	db.session.commit()
+
+	pessoas = Pessoa.query.all()
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+
