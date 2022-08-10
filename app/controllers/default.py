@@ -46,3 +46,21 @@ def ordenacao(campo='id', ordem_anterior=''):
 
 	return render_template('listagem.html', pessoas=pessoas, ordem=campo)	
 
+@app.route('/consulta', methods=['POST'])
+def consulta():
+	consulta = '%'+request.form.get('consulta')+'%'
+	campo = request.form.get('campo')
+
+	if campo == 'nome':
+		pessoas = Pessoa.query.filter(Pessoa.nome.like(consulta)).all()
+	elif campo == 'idade':
+		pessoas = Pessoa.query.filter(Pessoa.idade.like(consulta)).all()
+	elif campo == 'sexo':
+		pessoas = Pessoa.query.filter(Pessoa.sexo.like(consulta)).all()
+	elif campo == 'salario':
+		pessoas = Pessoa.query.filter(Pessoa.salario.like(consulta)).all()
+	else:
+		pessoas = Pessoa.query.all()
+
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+
