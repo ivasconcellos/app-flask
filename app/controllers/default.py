@@ -9,3 +9,8 @@ def listagem():
 	pessoas = Pessoa.query.all()
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
+@app.route('/selecao/<int:id>')
+def selecao(id=0):
+	pessoas = Pessoa.query.filter_by(id=id).all()
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+
