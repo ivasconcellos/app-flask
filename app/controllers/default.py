@@ -127,3 +127,34 @@ def salvar_delecao():
 	pessoas = Pessoa.query.all()
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
+@app.route('/graficos')
+def graficos():
+	pessoasM = Pessoa.query.filter_by(sexo='M').all()
+	pessoasF = Pessoa.query.filter_by(sexo='F').all()
+
+	salarioM = 0
+	for m in pessoasM:
+		salarioM += m.salario
+	if len(pessoasM) > 0:
+		salarioM = salarioM / len(pessoasM)
+
+	salarioF = 0
+	for f in pessoasF:
+		salarioF += f.salario
+	if len(pessoasF) > 0:
+		salarioF = salarioF / len(pessoasF)
+
+	idadeM = 0
+	for m in pessoasM:
+		idadeM += m.idade
+	if len(pessoasM) > 0:
+		idadeM = idadeM / len(pessoasM)
+
+	idadeF = 0
+	for f in pessoasF:
+		idadeF += f.idade
+	if len(pessoasF) > 0:
+		idadeF = idadeF / len(pessoasF)
+
+	return render_template('graficos.html', 
+		salarioM=salarioM, salarioF=salarioF, idadeM=idadeM, idadeF=idadeF)
