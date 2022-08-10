@@ -85,3 +85,28 @@ def salvar_insercao():
 	pessoas = Pessoa.query.all()
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
+@app.route('/edicao/<int:id>')
+def edicao(id=0):
+	pessoa = Pessoa.query.filter_by(id=id).first()
+	return render_template('edicao.html', pessoa=pessoa)
+
+@app.route('/salvar_edicao', methods=['POST'])
+def salvar_edicao():
+	Id = int(request.form.get('id'))
+	Nome = request.form.get('nome')
+	Idade = int(request.form.get('idade'))
+	Sexo = request.form.get('sexo')
+	Salario = float(request.form.get('salario'))
+
+	pessoa = Pessoa.query.filter_by(id=Id).first()
+
+    #Atualiza os campos da Pessoa no banco de dados
+	pessoa.nome = Nome
+	pessoa.idade = Idade
+	pessoa.sexo = Sexo
+	pessoa.salario = Salario
+	db.session.commit()
+
+	pessoas = Pessoa.query.all()
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+
