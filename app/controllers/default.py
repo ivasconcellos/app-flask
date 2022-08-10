@@ -110,3 +110,20 @@ def salvar_edicao():
 	pessoas = Pessoa.query.all()
 	return render_template('listagem.html', pessoas=pessoas, ordem='id')
 
+@app.route('/delecao/<int:id>')
+def delecao(id=0):
+	pessoa = Pessoa.query.filter_by(id=id).first()
+	return render_template('delecao.html', pessoa=pessoa)
+
+@app.route('/salvar_delecao', methods=['POST'])
+def salvar_delecao():
+	Id = int(request.form.get('id'))
+
+	pessoa = Pessoa.query.filter_by(id=Id).first()
+
+	db.session.delete(pessoa)
+	db.session.commit()
+
+	pessoas = Pessoa.query.all()
+	return render_template('listagem.html', pessoas=pessoas, ordem='id')
+
